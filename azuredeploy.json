@@ -8,12 +8,6 @@
                 "description": "Name of the Key Vault"
             }
         },
-        "containerRegistryName": {
-            "type": "string",
-            "metadata": {
-                "description": "Name of the Container Registry"
-            }
-        },
         "containerInstanceName": {
             "type": "string",
             "metadata": {
@@ -48,7 +42,7 @@
         "imageName": {
             "type": "string",
             "metadata": {
-                "description": "Container image name"
+                "description": "Container image name from GitHub Container Registry"
             }
         }
     },
@@ -124,25 +118,12 @@
             }
         },
         {
-            "type": "Microsoft.ContainerRegistry/registries",
-            "apiVersion": "2019-05-01",
-            "name": "[parameters('containerRegistryName')]",
-            "location": "[parameters('location')]",
-            "sku": {
-                "name": "Standard"
-            },
-            "properties": {
-                "adminUserEnabled": true
-            }
-        },
-        {
             "type": "Microsoft.ContainerInstance/containerGroups",
             "apiVersion": "2021-03-01",
             "name": "[parameters('containerInstanceName')]",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]",
-                "[resourceId('Microsoft.ContainerRegistry/registries', parameters('containerRegistryName'))]"
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
             ],
             "identity": {
                 "type": "UserAssigned",

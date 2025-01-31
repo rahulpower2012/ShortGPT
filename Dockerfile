@@ -14,7 +14,7 @@ RUN echo "azure-keyvault-secrets==4.7.0" >> requirements.txt
 
 # Install dependencies
 RUN pip install -r requirements.txt
-BB
+
 # Copy the local package directory content into the container at /app
 COPY . /app
 

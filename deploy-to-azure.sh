@@ -20,7 +20,6 @@ echo "Please provide the following information:"
 read -p "Resource Group Name: " RESOURCE_GROUP
 read -p "Location (e.g., eastus): " LOCATION
 read -p "Key Vault Name: " KEY_VAULT_NAME
-read -p "Container Registry Name: " ACR_NAME
 read -p "Container Instance Name: " CONTAINER_NAME
 read -p "OpenAI API Key: " OPENAI_API_KEY
 read -p "ElevenLabs API Key: " ELEVENLABS_API_KEY
@@ -30,28 +29,18 @@ read -p "Pexels API Key: " PEXELS_API_KEY
 echo "Creating resource group..."
 az group create --name $RESOURCE_GROUP --location $LOCATION
 
-# Build and push Docker image to ACR
-echo "Creating Azure Container Registry..."
-az acr create --resource-group $RESOURCE_GROUP --name $ACR_NAME --sku Standard
+# Set the image name from GHCR
+GITHUB_USERNAME="rahulpower2012"
+REPO_NAME="ShortGPT"
+IMAGE_NAME="ghcr.io/$GITHUB_USERNAME/$REPO_NAME:l isatest"
 
-# Log in to ACR
-echo "Logging in to ACR..."
-az acr login --name $ACR_NAME
-
-# Build and push the image
-echo "Building and pushing Docker image..."
-IMAGE_NAME="$ACR_NAME.azurecr.io/shortgpt:latest"
-docker build -t $IMAGE_NAME .
-docker push $IMAGE_NAME
-
-# Deploy using ARM template
+# Deploy using ARM template mili
 echo "Deploying resources using ARM template..."
 az deployment group create \
     --resource-group $RESOURCE_GROUP \
     --template-file azuredeploy.json \
     --parameters \
         keyVaultName=$KEY_VAULT_NAME \
-        containerRegistryName=$ACR_NAME \
         containerInstanceName=$CONTAINER_NAME \
         openaiApiKey=$OPENAI_API_KEY \
         elevenlabsApiKey=$ELEVENLABS_API_KEY \
