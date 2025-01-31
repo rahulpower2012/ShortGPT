@@ -35,8 +35,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/shortgpt-on-azure:latest
-            ghcr.io/shortgpt-on-azure:${{ github.sha }}
+            ghcr.io/${{ github.actor }}/shortgpt-on-azure:latest
+            ghcr.io/${{ github.actor }}/shortgpt-on-azure:${{ github.sha }}
 
       - name: Azure Login
         uses: azure/login@v1
